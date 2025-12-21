@@ -22,7 +22,7 @@ async def crawl_site(url: str):
             ]
         },
         limit=10,
-        crawl_entire_domain=True
+        crawl_entire_domain=False
     )
 
 # as long as you see some output, you wouldn't give up waiting
@@ -47,8 +47,9 @@ async def monitor():
 
 async def main(url: str):
     await asyncio.gather(crawl_site(url), monitor())
+    return docs.data
 
 if "__main__" == __name__:
-    asyncio.run(main("www.omantel.com"))
-    print(docs)
+    print(asyncio.run(main("www.omantel.com")))
+
 
