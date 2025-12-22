@@ -21,7 +21,7 @@ def count_token(data):
     )
     return tokens.total_tokens
 
-def chunk_by_context_window(data: list[str]) -> list[str]:
+def chunk_by_context_window_if_needed(data: list[str]) -> list[str]:
     """
     A recursive function that is going to check if the input is out of context window, to chunk it if needed
     :param data: A list of input data, initially contains one time which is the data needed to be sent to the model
@@ -40,12 +40,12 @@ def chunk_by_context_window(data: list[str]) -> list[str]:
     if len(data) == 1 and count_token(data) > CONTEXT_WINDOW:
         mid = len(data[0]) // 2
         left, right = data[0][:mid], data[0][mid:]
-        return chunk_by_context_window([left]) + chunk_by_context_window([right])
+        return chunk_by_context_window_if_needed([left]) + chunk_by_context_window_if_needed([right])
 
     # if items are more one, it checks the context window automatically
     result = []
     for item in data:
-        result.extend(chunk_by_context_window([item]))
+        result.extend(chunk_by_context_window_if_needed([item]))
     return result
 
 
@@ -61,7 +61,7 @@ def __test_chunking():
    with open("../data/scraped_output_example", encoding="utf-8") as f:
         inn = f.read()
         inn = inn * 20
-        data = chunk_by_context_window([inn])
+        data = chunk_by_context_window_if_needed([inn])
         for i, item in enumerate(data):
             print(f"{i+1}. {item.replace("\n", " ")[:100]}")
 
