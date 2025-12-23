@@ -39,6 +39,16 @@ Example output format:
 in_file_path = "../common/scraped_output_example_cleaned.md"
 out_file_path = "../common/q_a.json"
 
+def preprocess_q_a(out_file_path):
+    """Converting json list of objects with q/a fields to json list of string concatenating q/a"""""
+    with open(out_file_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    dump = [f"Q:{entry["Q"]}A:{entry["A"]}" for entry in data]
+
+    print(dump)
+    with open(out_file_path, mode='w', encoding="utf-8") as f:
+        json.dump(dump, f, ensure_ascii=False, indent=4)
 
 
 def dump_json(out_file_path: str, extra_data: list):
@@ -102,4 +112,5 @@ def generate_qa():
 
 
 if __name__ == "__main__":
-    generate_qa()
+    # generate_qa()
+    preprocess_q_a(out_file_path)

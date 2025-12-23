@@ -1,170 +1,44 @@
 [
-    {
-        "Q": "What is the partnership Omantel announced?",
-        "A": "Omantel has partnered with XHAWI, which is described as the first Omani marketplace."
-    },
-    {
-        "Q": "What are the different service categories offered by Omantel?",
-        "A": "Omantel offers services for Personal, Business, and Wholesale customers. They also cater to Investors."
-    },
-    {
-        "Q": "Where can I find Omantel's online store?",
-        "A": "Omantel's online store can be accessed at https://store.omantel.om/en/store/"
-    },
-    {
-        "Q": "How can I manage my Omantel account online?",
-        "A": "You can log in to manage your account. If you have forgotten your password, there is a link for password recovery."
-    },
-    {
-        "Q": "What options are available for creating an Omantel account?",
-        "A": "You can create an account to get started and there is also an option to create an account via a registration link."
-    },
-    {
-        "Q": "Where can I check my Omantel email?",
-        "A": "You can check your Omantel email at https://mail.omantel.net.om/owa/auth/logon.aspx"
-    },
-    {
-        "Q": "What types of products are featured in the Omantel store?",
-        "A": "The Omantel store features popular products such as Apple Watch Ultra, AirPods Pro, AirPods (3rd generation), and D-Link Mesh Wi-Fi 6 AX1500."
-    },
-    {
-        "Q": "What are the available product categories in the Omantel store?",
-        "A": "The Omantel store categorizes products including Smartphones, Smart Watches, Accessories, Laptops and Tablets, Smart Living products, Omani Products, and Gaming and Entertainment items."
-    },
-    {
-        "Q": "Where can I find specific brands like Apple or Samsung products on the Omantel store?",
-        "A": "You can find Apple products at https://store.omantel.om/en/store/Apple and Samsung products at https://store.omantel.om/en/store/Samsung."
-    },
-    {
-        "Q": "Does Omantel offer gift cards for services like Netflix or iTunes?",
-        "A": "Yes, Omantel offers gift cards for Netflix at https://store.omantel.om/en/store/gift%20cards?filter=78101116102108105120 and for iTunes at https://store.omantel.om/en/store/gift%20cards?filter=65112112108101."
-    },
-    {
-        "Q": "What are Omantel's postpaid mobile plan offerings?",
-        "A": "Omantel offers postpaid plans including Baqati, Al Ufuq, and Erada & Aman. They also have Baqati Data-only plans and various Jawazak roaming options."
-    },
-    {
-        "Q": "What are Omantel's prepaid mobile plan offerings?",
-        "A": "Omantel's prepaid options include Hayyak plans (Hayyak Plus, Hayyak Tariff, Hayyak Data Only, Tourist Packs, PAYG, Erada & Aman), and various add-ons like Mobile Internet, National Calls, International Calls, Nonstop Social, Marhaba World, Talk more, and Hayyak Liberty."
-    },
-    {
-        "Q": "What home services does Omantel provide?",
-        "A": "Omantel provides Home Internet Plans, OSN TV, entertainment and gaming services, cybersecurity solutions, and various devices. They also offer Fiber-to-the-Room (FTTR) and Wi-Fi 7 services."
-    },
-    {
-        "Q": "What are the available entertainment and gaming services from Omantel?",
-        "A": "Omantel offers services like TOD, Shahid VIP, OSN+, and GeForce NOW. They also feature gaming consoles and gaming add-ons."
-    },
-    {
-        "Q": "Where can I find information about Omantel's 5G services?",
-        "A": "Information about Omantel's 5G services can be found at https://www.omantel.om/Personal/5g."
-    },
-    {
-        "Q": "What value-added services does Omantel offer for mobile users?",
-        "A": "Omantel offers Value Added Services (VAS) including a mobile app, auction numbers, SecurNet, and options like 'Call me back', 'Emergency Services', 'Voice mail', 'Family & Friends', and 'Money transfer'."
-    },
-    {
-        "Q": "How can I contact Omantel's call center?",
-        "A": "You can contact Omantel's Call Centre at 1234 and the Business Call Centre at 1235."
-    },
-    {
-        "Q": "What information is available in the 'Company' section of Omantel's website?",
-        "A": "The 'Company' section includes information about Omantel's About Us page, Corporate Governance, Whistleblowing policy, Sustainability initiatives, Innovation Labs, Careers, and Media Center."
-    },
-    {
-        "Q": "Where can I find customer support and payment channel information for Omantel?",
-        "A": "Customer support can be found at https://www.omantel.om/Personal/mobile/Help, and information on Payment Channels is available at https://www.omantel.om/About%20us/payment-channels."
-    },
-    {
-        "Q": "How can I find an Omantel outlet?",
-        "A": "You can find an Omantel outlet using the 'Find Outlet' feature at https://www.omantel.om/Personal/Around%20Me."
-    },
-    {
-        "Q": "Where can I check Omantel's network coverage?",
-        "A": "Omantel's network coverage information is available at https://www.omantel.om/Personal/mobile/Coverage."
-    },
-    {
-        "Q": "What business-related services does Omantel offer?",
-        "A": "Omantel offers services for businesses including iSupplier, Wholesale portal, e-Tendering, and Permit Service."
-    },
-    {
-        "Q": "What policies does Omantel have available on its website?",
-        "A": "Omantel provides access to its Privacy Policy and information regarding the 3G Sunset."
-    },
-    {
-        "Q": "How can I stay updated with Omantel's activities?",
-        "A": "You can follow Omantel on their social media channels: Facebook, Instagram, Twitter, YouTube, and WhatsApp."
-    },
-    {
-        "Q": "What is the CVV/CVC code for a credit card?",
-        "A": "The CVV/CVC code can be found on the back of the credit card, typically on the white signature bar, and consists of the last 3 digits for Visa and MasterCard."
-    },
-    {
-        "Q": "How does Omantel's 'Pay any bill' service work?",
-        "A": "To pay a bill, you need to enter a phone number or account number, click 'display bills', select the bills, and then click 'pay bills'."
-    },
-    {
-        "Q": "What are the payment options available on Omantel's website?",
-        "A": "Omantel allows payment via credit card, requiring card number, expiry date, CVC/CVV, cardholder name, and email address."
-    },
-    {
-        "Q": "What is the 'Makasib' program by Omantel?",
-        "A": "Makasib is Omantel's loyalty program designed to reward customers. It involves earning points, offers, and redemption opportunities."
-    },
-    {
-        "Q": "How can I earn Makasib points?",
-        "A": "You can earn Makasib points by paying bills, making calls, using the internet, or purchasing from Omantel's Makasib partners."
-    },
-    {
-        "Q": "How can I access my Makasib account?",
-        "A": "You can access your Makasib account through the Omantel App by downloading it from the Apple Store or Google Play, or by dialing *224# from your phone."
-    },
-    {
-        "Q": "What information is provided about Omantel's business services?",
-        "A": "Omantel offers services for Small and Medium Businesses (SMBs) and Enterprises & Government. These include mobile, fixed voice, internet, and ICT solutions."
-    },
-    {
-        "Q": "What are some of Omantel's business ICT solutions?",
-        "A": "Omantel's ICT solutions include Cloud & Data Center services, Software as a Service (SaaS), Managed Services, Unified Communications & Collaborations, Cyber Security, IoT & AI, and specific solutions like Cloud Server, Domain Registration, Web Hosting, and Hosted Exchange."
-    },
-    {
-        "Q": "What specific business offers does Omantel provide for SMEs?",
-        "A": "Omantel offers 'A'amali+' packages for Riyada SMEs, 'Nama Professional' and 'Nama' plans, and 'Fiber Pro' internet services. They also have 'Office out of the Box' with a discount and 'GoBiz Roaming Plans'."
-    },
-    {
-        "Q": "What are the benefits of Omantel's 'GoBiz Roaming' plans?",
-        "A": "GoBiz Roaming plans offer unified rates for data, receiving calls, making calls to Oman & GCC, local calls, and SMS in over 130 countries."
-    },
-    {
-        "Q": "What are Omantel's wholesale services?",
-        "A": "Omantel Wholesale provides Infrastructure, Connectivity, Internet, Carrier, Roaming & Mobile Services, and Regulated National Products. They emphasize their network capabilities, including subsea cable systems and terrestrial cables."
-    },
-    {
-        "Q": "What makes Omantel a unique partner for wholesale services?",
-        "A": "Omantel highlights its stability, neutrality, openness, and ultra-low latency networking. They are the first GCC operator to land a subsea cable in Europe and the first to launch a carrier-neutral data center in the MENA region."
-    },
-    {
-        "Q": "What are Omantel's key achievements in wholesale services?",
-        "A": "Omantel has achieved being the first GCC operator to land a subsea cable in Europe, the first to launch a carrier-neutral data center (MC1) in the MENA region, and the first operator to host MVNOs in the MENA region. They have over 20 investments in global subsea cable systems and around 40 hyperscalers and content providers hosted within their network."
-    },
-    {
-        "Q": "What are the main product categories offered by Omantel Wholesale?",
-        "A": "Omantel Wholesale offers Infrastructure, Connectivity, Internet, Carrier, Roaming & Mobile Services, and Regulated National Products."
-    },
-    {
-        "Q": "How does Omantel ensure connectivity for its wholesale partners?",
-        "A": "Omantel ensures connectivity through its extensive infrastructure, including 15 major subsea cable systems and 4 terrestrial cables connected to neighboring countries. They focus on ultra-low latency networking."
-    },
-    {
-        "Q": "What kind of support does Omantel offer for international money transfers through OMPAY?",
-        "A": "OMPAY offers international money transfers to over 200 destinations, emphasizing speed, security, affordability, and attractive rates with low fees."
-    },
-    {
-        "Q": "What is the 'Sehati' program by Omantel?",
-        "A": "The 'Sehati' program is associated with achieving goals using a smartwatch and has a program associated with it for viewing details."
-    },
-    {
-        "Q": "What is the purpose of the Omantel App?",
-        "A": "The Omantel App provides an enhanced experience with features like easy top-up, fast bill payment, gift cards, and managing Makasib accounts."
-    }
+    "Q:What is the partnership Omantel announced?A:Omantel has partnered with XHAWI, which is described as the first Omani marketplace.",
+    "Q:What are the different service categories offered by Omantel?A:Omantel offers services for Personal, Business, and Wholesale customers. They also cater to Investors.",
+    "Q:Where can I find Omantel's online store?A:Omantel's online store can be accessed at https://store.omantel.om/en/store/",
+    "Q:How can I manage my Omantel account online?A:You can log in to manage your account. If you have forgotten your password, there is a link for password recovery.",
+    "Q:What options are available for creating an Omantel account?A:You can create an account to get started and there is also an option to create an account via a registration link.",
+    "Q:Where can I check my Omantel email?A:You can check your Omantel email at https://mail.omantel.net.om/owa/auth/logon.aspx",
+    "Q:What types of products are featured in the Omantel store?A:The Omantel store features popular products such as Apple Watch Ultra, AirPods Pro, AirPods (3rd generation), and D-Link Mesh Wi-Fi 6 AX1500.",
+    "Q:What are the available product categories in the Omantel store?A:The Omantel store categorizes products including Smartphones, Smart Watches, Accessories, Laptops and Tablets, Smart Living products, Omani Products, and Gaming and Entertainment items.",
+    "Q:Where can I find specific brands like Apple or Samsung products on the Omantel store?A:You can find Apple products at https://store.omantel.om/en/store/Apple and Samsung products at https://store.omantel.om/en/store/Samsung.",
+    "Q:Does Omantel offer gift cards for services like Netflix or iTunes?A:Yes, Omantel offers gift cards for Netflix at https://store.omantel.om/en/store/gift%20cards?filter=78101116102108105120 and for iTunes at https://store.omantel.om/en/store/gift%20cards?filter=65112112108101.",
+    "Q:What are Omantel's postpaid mobile plan offerings?A:Omantel offers postpaid plans including Baqati, Al Ufuq, and Erada & Aman. They also have Baqati Data-only plans and various Jawazak roaming options.",
+    "Q:What are Omantel's prepaid mobile plan offerings?A:Omantel's prepaid options include Hayyak plans (Hayyak Plus, Hayyak Tariff, Hayyak Data Only, Tourist Packs, PAYG, Erada & Aman), and various add-ons like Mobile Internet, National Calls, International Calls, Nonstop Social, Marhaba World, Talk more, and Hayyak Liberty.",
+    "Q:What home services does Omantel provide?A:Omantel provides Home Internet Plans, OSN TV, entertainment and gaming services, cybersecurity solutions, and various devices. They also offer Fiber-to-the-Room (FTTR) and Wi-Fi 7 services.",
+    "Q:What are the available entertainment and gaming services from Omantel?A:Omantel offers services like TOD, Shahid VIP, OSN+, and GeForce NOW. They also feature gaming consoles and gaming add-ons.",
+    "Q:Where can I find information about Omantel's 5G services?A:Information about Omantel's 5G services can be found at https://www.omantel.om/Personal/5g.",
+    "Q:What value-added services does Omantel offer for mobile users?A:Omantel offers Value Added Services (VAS) including a mobile app, auction numbers, SecurNet, and options like 'Call me back', 'Emergency Services', 'Voice mail', 'Family & Friends', and 'Money transfer'.",
+    "Q:How can I contact Omantel's call center?A:You can contact Omantel's Call Centre at 1234 and the Business Call Centre at 1235.",
+    "Q:What information is available in the 'Company' section of Omantel's website?A:The 'Company' section includes information about Omantel's About Us page, Corporate Governance, Whistleblowing policy, Sustainability initiatives, Innovation Labs, Careers, and Media Center.",
+    "Q:Where can I find customer support and payment channel information for Omantel?A:Customer support can be found at https://www.omantel.om/Personal/mobile/Help, and information on Payment Channels is available at https://www.omantel.om/About%20us/payment-channels.",
+    "Q:How can I find an Omantel outlet?A:You can find an Omantel outlet using the 'Find Outlet' feature at https://www.omantel.om/Personal/Around%20Me.",
+    "Q:Where can I check Omantel's network coverage?A:Omantel's network coverage information is available at https://www.omantel.om/Personal/mobile/Coverage.",
+    "Q:What business-related services does Omantel offer?A:Omantel offers services for businesses including iSupplier, Wholesale portal, e-Tendering, and Permit Service.",
+    "Q:What policies does Omantel have available on its website?A:Omantel provides access to its Privacy Policy and information regarding the 3G Sunset.",
+    "Q:How can I stay updated with Omantel's activities?A:You can follow Omantel on their social media channels: Facebook, Instagram, Twitter, YouTube, and WhatsApp.",
+    "Q:What is the CVV/CVC code for a credit card?A:The CVV/CVC code can be found on the back of the credit card, typically on the white signature bar, and consists of the last 3 digits for Visa and MasterCard.",
+    "Q:How does Omantel's 'Pay any bill' service work?A:To pay a bill, you need to enter a phone number or account number, click 'display bills', select the bills, and then click 'pay bills'.",
+    "Q:What are the payment options available on Omantel's website?A:Omantel allows payment via credit card, requiring card number, expiry date, CVC/CVV, cardholder name, and email address.",
+    "Q:What is the 'Makasib' program by Omantel?A:Makasib is Omantel's loyalty program designed to reward customers. It involves earning points, offers, and redemption opportunities.",
+    "Q:How can I earn Makasib points?A:You can earn Makasib points by paying bills, making calls, using the internet, or purchasing from Omantel's Makasib partners.",
+    "Q:How can I access my Makasib account?A:You can access your Makasib account through the Omantel App by downloading it from the Apple Store or Google Play, or by dialing *224# from your phone.",
+    "Q:What information is provided about Omantel's business services?A:Omantel offers services for Small and Medium Businesses (SMBs) and Enterprises & Government. These include mobile, fixed voice, internet, and ICT solutions.",
+    "Q:What are some of Omantel's business ICT solutions?A:Omantel's ICT solutions include Cloud & Data Center services, Software as a Service (SaaS), Managed Services, Unified Communications & Collaborations, Cyber Security, IoT & AI, and specific solutions like Cloud Server, Domain Registration, Web Hosting, and Hosted Exchange.",
+    "Q:What specific business offers does Omantel provide for SMEs?A:Omantel offers 'A'amali+' packages for Riyada SMEs, 'Nama Professional' and 'Nama' plans, and 'Fiber Pro' internet services. They also have 'Office out of the Box' with a discount and 'GoBiz Roaming Plans'.",
+    "Q:What are the benefits of Omantel's 'GoBiz Roaming' plans?A:GoBiz Roaming plans offer unified rates for data, receiving calls, making calls to Oman & GCC, local calls, and SMS in over 130 countries.",
+    "Q:What are Omantel's wholesale services?A:Omantel Wholesale provides Infrastructure, Connectivity, Internet, Carrier, Roaming & Mobile Services, and Regulated National Products. They emphasize their network capabilities, including subsea cable systems and terrestrial cables.",
+    "Q:What makes Omantel a unique partner for wholesale services?A:Omantel highlights its stability, neutrality, openness, and ultra-low latency networking. They are the first GCC operator to land a subsea cable in Europe and the first to launch a carrier-neutral data center in the MENA region.",
+    "Q:What are Omantel's key achievements in wholesale services?A:Omantel has achieved being the first GCC operator to land a subsea cable in Europe, the first to launch a carrier-neutral data center (MC1) in the MENA region, and the first operator to host MVNOs in the MENA region. They have over 20 investments in global subsea cable systems and around 40 hyperscalers and content providers hosted within their network.",
+    "Q:What are the main product categories offered by Omantel Wholesale?A:Omantel Wholesale offers Infrastructure, Connectivity, Internet, Carrier, Roaming & Mobile Services, and Regulated National Products.",
+    "Q:How does Omantel ensure connectivity for its wholesale partners?A:Omantel ensures connectivity through its extensive infrastructure, including 15 major subsea cable systems and 4 terrestrial cables connected to neighboring countries. They focus on ultra-low latency networking.",
+    "Q:What kind of support does Omantel offer for international money transfers through OMPAY?A:OMPAY offers international money transfers to over 200 destinations, emphasizing speed, security, affordability, and attractive rates with low fees.",
+    "Q:What is the 'Sehati' program by Omantel?A:The 'Sehati' program is associated with achieving goals using a smartwatch and has a program associated with it for viewing details.",
+    "Q:What is the purpose of the Omantel App?A:The Omantel App provides an enhanced experience with features like easy top-up, fast bill payment, gift cards, and managing Makasib accounts."
 ]
