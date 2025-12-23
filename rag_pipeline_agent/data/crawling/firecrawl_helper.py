@@ -14,22 +14,31 @@ docs = None
 
 async def crawl_site(url: str):
     global docs
-    docs = await crawler.crawl(
-        url=url,
-        scrape_options={
-            "formats": [
-                'markdown'
-            ]
-        },
-        limit=10,
-        crawl_entire_domain=False
-    )
+
+    if not url.startswith("http"):
+        raise ValueError(f"Invalid URL: it must begin with 'http://' or 'https://'")
+
+    if not api_key:
+        raise KeyError("api key not found in env")
+
+    try:
+        docs = await crawler.crawl(
+            url=url,
+            scrape_options={
+                "formats": [
+                    'markdown'
+                ]
+            },
+            limit=10,
+            crawl_entire_domain=False
+        )
+    except Exception as e:
+        raise RuntimeError(f"Crawl failed unexpectedly: {e}")
 
 # as long as you see some output, you wouldn't give up waiting
 async def monitor():
     waited_time = 0
     while docs is None:
-
         if waited_time < 30:
             print("Please wait")
         elif waited_time < 60:
@@ -46,8 +55,14 @@ async def monitor():
 
 
 async def main(url: str):
-    await asyncio.gather(crawl_site(url), monitor())
-    return docs.data
+    try:
+        # If crawl_site raises an exception, gather will propagate it immediately
+        # and stop the monitor automatically.
+        await asyncio.gather(crawl_site(url), monitor())
+        return docs.data
+    except Exception as e:
+        print(f"Crawl Task Failed: {e}")
+        raise
 
 if "__main__" == __name__:
     print(asyncio.run(main("www.omantel.com")))

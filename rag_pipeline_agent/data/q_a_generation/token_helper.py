@@ -6,6 +6,9 @@ CONTEXT_WINDOW = 1_000_000
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 def count_token(data):
+    if not api_key:
+        raise KeyError("GOOGLE_API_KEY not found. Token counting impossible.")
+
     """
     alternative though api
     POST https://generativelanguage.googleapis.com/v1beta/models/*:countTokens
@@ -14,12 +17,17 @@ def count_token(data):
         "parts": [{"text": [data]}] }]
     }
     """
+
     client = genai.Client(api_key=api_key)
-    tokens = client.models.count_tokens(
-        model='gemini-2.5-flash',
-        contents=data,
-    )
-    return tokens.total_tokens
+
+    try:
+        tokens = client.models.count_tokens(
+            model='gemini-2.5-flash',
+            contents=data,
+        )
+        return tokens.total_tokens
+    except Exception as e:
+        raise RuntimeError(f"Google API error during token count: {e}")
 
 def chunk_by_context_window_if_needed(data: list[str]) -> list[str]:
     """
@@ -27,26 +35,29 @@ def chunk_by_context_window_if_needed(data: list[str]) -> list[str]:
     :param data: A list of input data, initially contains one time which is the data needed to be sent to the model
     :return: A list of the chunked data, if the input doesn't need to be chunked, it will return the same input
     """
+    try:
+        # can't chunk single char
+        if len(data[0]) <= 1:
+            return data
 
-    # can't chunk single char
-    if len(data[0]) <= 1:
-        return data
+        # if it contains one value, and it doesn't go beyond the context window then return
+        if len(data) == 1 and count_token(data) <= CONTEXT_WINDOW:
+            return data
 
-    # if it contains one value, and it doesn't go beyond the context window then return
-    if len(data) == 1 and count_token(data) <= CONTEXT_WINDOW:
-        return data
+        # the single item has exceeded the context windows
+        if len(data) == 1 and count_token(data) > CONTEXT_WINDOW:
+            mid = len(data[0]) // 2
+            left, right = data[0][:mid], data[0][mid:]
+            return chunk_by_context_window_if_needed([left]) + chunk_by_context_window_if_needed([right])
 
-    # the single item has exceeded the context windows
-    if len(data) == 1 and count_token(data) > CONTEXT_WINDOW:
-        mid = len(data[0]) // 2
-        left, right = data[0][:mid], data[0][mid:]
-        return chunk_by_context_window_if_needed([left]) + chunk_by_context_window_if_needed([right])
+        # if items are more one, it checks the context window automatically
+        result = []
+        for item in data:
+            result.extend(chunk_by_context_window_if_needed([item]))
+        return result
 
-    # if items are more one, it checks the context window automatically
-    result = []
-    for item in data:
-        result.extend(chunk_by_context_window_if_needed([item]))
-    return result
+    except RecursionError:
+        raise ValueError("Data is too complex to chunk via recursion. Consider manual splitting.")
 
 
 def __test_count_tokens():

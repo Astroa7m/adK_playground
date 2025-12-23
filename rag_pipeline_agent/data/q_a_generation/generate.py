@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 from tqdm import tqdm
 
-from rag_pipline_agent.data.q_a_generation.token_helper import chunk_by_context_window_if_needed
+from rag_pipeline_agent.data.q_a_generation.token_helper import chunk_by_context_window_if_needed
 
 load_dotenv()
 
@@ -67,48 +67,53 @@ def dump_json(out_file_path: str, extra_data: list):
             json.dump(extra_data, f, ensure_ascii=False, indent=4)
 
 def generate_qa():
+
+    if not os.path.exists(in_file_path):
+        raise FileNotFoundError(f"Input file missing: {in_file_path}. Did you run the cleaner?")
+
     # getting markdwon data
     with open(in_file_path, encoding="utf-8") as in_f:
         in_data = in_f.read()
 
     # checking for markdown data size
-
-    full_content_chunks = chunk_by_context_window_if_needed([in_data])
+    try:
+        full_content_chunks = chunk_by_context_window_if_needed([in_data])
+    except Exception as e:
+        raise RuntimeError(f"Chunking failed: {e}")
 
     for content in full_content_chunks:
-
-        response = client.models.generate_content_stream(
-            model="gemini-2.5-flash-lite",
-            contents=content,
-            config=types.GenerateContentConfig(
-                system_instruction=system_prompt
-            )
-        )
-
-        final_data = ""
-
-        for chunk in tqdm(response, desc="Streaming chunks", unit="chunk"):
-            final_data += chunk.text
-
-        # removing backticks and 'json'
-        final_data = final_data.replace("`", "").replace("json", "")
-
-        print("/"*50, "BEGIN FOR DEBUGGING", "/"*50)
-        print(final_data)
-        print("/"*50, "END FOR DEBUGGING", "/"*50)
-
-        # check if final data is actually parserable to json
         try:
+            response = client.models.generate_content_stream(
+                model="gemini-2.5-flash-lite",
+                contents=content,
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt
+                )
+            )
+
+            final_data = ""
+
+            for chunk in tqdm(response, desc="Streaming chunks", unit="chunk"):
+                final_data += chunk.text
+
+            # removing backticks and 'json'
+            final_data = final_data.replace("`", "").replace("json", "")
+
             data = json.loads(final_data)
+
+            if not isinstance(data, list):
+                raise ValueError("LLM did not return a list of Q/A pairs.")
+
+            dump_json(out_file_path, data)
+
+            print("Done Converting data into Q/A")
+        except json.JSONDecodeError as e:
+            print(f"Skipping chunk: LLM returned invalid JSON. Error: {e}")
+            print(f"Returned response: {data}")
+            break
         except Exception as e:
-            print("Error converting model response to json", e)
-            # we should like retry but will leave it for later
-            return
-
-        dump_json(out_file_path, data)
-
-        print("Done Converting data into Q/A")
-
+            print(f"Unexpected error during generation: {e}")
+            break
 
 
 if __name__ == "__main__":

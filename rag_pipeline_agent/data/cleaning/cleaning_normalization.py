@@ -105,29 +105,42 @@ def deduplicate(data: str):
 
 
 def clean_all(data, remove_images=False):
-    normalized_link = normalize_links(data)
+    if not isinstance(data, str):
+        raise TypeError(f"data param must be a string got {type(data).__name__} instead")
 
-    if remove_images:
-        normalized_link = remove_image_alt_link(normalized_link)
+    if not data.strip():
+        raise ValueError("data param must not be empty")
 
-    lines_fixed = fix_multiple_newlines(normalized_link)
+    try:
 
-    standardized = standardize_encoding(lines_fixed)
+        normalized_link = normalize_links(data)
 
-    final_cleaned = deduplicate(standardized)
+        if remove_images:
+            normalized_link = remove_image_alt_link(normalized_link)
 
-    return final_cleaned
+        lines_fixed = fix_multiple_newlines(normalized_link)
+
+        standardized = standardize_encoding(lines_fixed)
+
+        final_cleaned = deduplicate(standardized)
+
+        return final_cleaned
+    except Exception as e:
+        raise RuntimeError(f"Cleaning pipeline failed during preprocessing {e}")
 
 
 if __name__ == "__main__":
-    with (open("../crawling/scraped_output_example.md", encoding="utf-8") as in_f,
-          open("../crawling/scraped_output_example_cleaned.md", mode='w', encoding="utf-8") as out_f):
-        raw = in_f.read()
-        init_len = len(raw)
-        cleaned = clean_all(raw)
-        out_f.write(cleaned)
-        final_len = len(cleaned)
-        print("Cleand Saved to file: ../crawling/scraped_output_example_cleaned.md")
+    try:
+        with (open("../crawling/scraped_output_example.md", encoding="utf-8") as in_f,
+              open("../crawling/scraped_output_example_cleaned.md", mode='w', encoding="utf-8") as out_f):
+            raw = in_f.read()
+            init_len = len(raw)
+            cleaned = clean_all(raw)
+            out_f.write(cleaned)
+            final_len = len(cleaned)
+            print("Cleand Saved to file: ../crawling/scraped_output_example_cleaned.md")
 
-        print(f"Length before: {init_len}")
-        print(f"Length After: {final_len}")
+            print(f"Length before: {init_len}")
+            print(f"Length After: {final_len}")
+    except Exception as e:
+        print(f"Error occurred: {e}")
