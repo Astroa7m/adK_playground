@@ -58,8 +58,8 @@ def chunk_by_context_window_if_needed(data: list[str]) -> list[str]:
 
     except RecursionError:
         raise ValueError("Data is too complex to chunk via recursion. Consider manual splitting.")
-
-
+    except Exception as e:
+        raise RuntimeError("Something went wrong with chunking scrapped data")
 def __test_count_tokens():
     with open("../data/scraped_output_example", encoding="utf-8") as f:
         inn = f.read()

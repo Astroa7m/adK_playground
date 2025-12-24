@@ -4,6 +4,9 @@ import os
 from dotenv import load_dotenv
 from firecrawl import AsyncFirecrawl, Firecrawl
 
+from rag_pipeline_agent.data.common import SCRAPPED_EXT
+from rag_pipeline_agent.data.common.helpers import create_and_get_website_dir_if_not_exist
+
 load_dotenv()
 
 api_key = os.getenv("FIRECRAWL_API_KEY")
@@ -54,17 +57,23 @@ async def monitor():
         print("Job Completed we have successfully scraped the website")
 
 
-async def main(url: str):
+async def async_scrape(file_path, website_url):
     try:
         # If crawl_site raises an exception, gather will propagate it immediately
         # and stop the monitor automatically.
-        await asyncio.gather(crawl_site(url), monitor())
-        return docs.data
+        await asyncio.gather(crawl_site(website_url), monitor())
+        # we are going to have a standard format for all scrapped data, all are going to be .md
+        with open(file_path / SCRAPPED_EXT, "w", encoding="utf=8") as f:
+            f.write(str(docs.data))
     except Exception as e:
         print(f"Crawl Task Failed: {e}")
         raise
 
+
+def main(file_path, website_url):
+    asyncio.run(async_scrape(file_path, website_url))
+
 if "__main__" == __name__:
-    print(asyncio.run(main("www.omantel.com")))
+    print(asyncio.run(async_scrape("www.omantel.com")))
 
 

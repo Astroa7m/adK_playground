@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 from tqdm import tqdm
 
+from rag_pipeline_agent.data.common import CLEANED_EXT, Q_A_EXT
 from rag_pipeline_agent.data.q_a_generation.token_helper import chunk_by_context_window_if_needed
 
 load_dotenv()
@@ -36,26 +37,15 @@ Example output format:
 ]
 """
 
-in_file_path = "../common/scraped_output_example_cleaned.md"
-out_file_path = "../common/q_a.json"
-
-def preprocess_q_a(out_file_path):
-    """Converting json list of objects with q/a fields to json list of string concatenating q/a"""""
-    with open(out_file_path, encoding="utf-8") as f:
-        data = json.load(f)
-
-    dump = [f"Q:{entry["Q"]}A:{entry["A"]}" for entry in data]
-
-    print(dump)
-    with open(out_file_path, mode='w', encoding="utf-8") as f:
-        json.dump(dump, f, ensure_ascii=False, indent=4)
-
-
 def dump_json(out_file_path: str, extra_data: list):
 
     if os.path.exists(out_file_path):
         with open(out_file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+            # checking if file is not empty
+            if os.path.getsize(out_file_path) > 0:
+                data = json.load(f)
+            else:
+                data = []
 
         data.extend(extra_data)
 
@@ -66,7 +56,10 @@ def dump_json(out_file_path: str, extra_data: list):
         with open(out_file_path, "w", encoding="utf-8") as f:
             json.dump(extra_data, f, ensure_ascii=False, indent=4)
 
-def generate_qa():
+def main(file_path):
+
+    in_file_path = file_path  / CLEANED_EXT
+    out_file_path = file_path  / Q_A_EXT
 
     if not os.path.exists(in_file_path):
         raise FileNotFoundError(f"Input file missing: {in_file_path}. Did you run the cleaner?")
@@ -104,8 +97,9 @@ def generate_qa():
             if not isinstance(data, list):
                 raise ValueError("LLM did not return a list of Q/A pairs.")
 
-            dump_json(out_file_path, data)
+            dump = [f"Q:{entry["Q"]}A:{entry["A"]}" for entry in data]
 
+            dump_json(out_file_path, dump)
             print("Done Converting data into Q/A")
         except json.JSONDecodeError as e:
             print(f"Skipping chunk: LLM returned invalid JSON. Error: {e}")
@@ -118,4 +112,5 @@ def generate_qa():
 
 if __name__ == "__main__":
     # generate_qa()
-    preprocess_q_a(out_file_path)
+    # preprocess_q_a(out_file_path)
+    pass

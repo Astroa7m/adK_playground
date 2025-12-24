@@ -2,6 +2,8 @@ import re
 
 from unidecode import unidecode
 
+from rag_pipeline_agent.data.common import SCRAPPED_EXT, CLEANED_EXT
+
 
 def normalize_links(data: str):
     """
@@ -104,7 +106,10 @@ def deduplicate(data: str):
     return "\n".join(unique)
 
 
-def clean_all(data, remove_images=False):
+def main(file_path, remove_images=False):
+    with open(file_path / SCRAPPED_EXT, encoding="utf=8") as f:
+        data = f.read()
+
     if not isinstance(data, str):
         raise TypeError(f"data param must be a string got {type(data).__name__} instead")
 
@@ -124,7 +129,11 @@ def clean_all(data, remove_images=False):
 
         final_cleaned = deduplicate(standardized)
 
-        return final_cleaned
+        with open(file_path  / CLEANED_EXT, "w",encoding="utf=8") as f:
+            f.write(final_cleaned)
+
+        print("Scrapped Data has been successfully cleaned")
+
     except Exception as e:
         raise RuntimeError(f"Cleaning pipeline failed during preprocessing {e}")
 
@@ -135,7 +144,7 @@ if __name__ == "__main__":
               open("../crawling/scraped_output_example_cleaned.md", mode='w', encoding="utf-8") as out_f):
             raw = in_f.read()
             init_len = len(raw)
-            cleaned = clean_all(raw)
+            cleaned = main(raw)
             out_f.write(cleaned)
             final_len = len(cleaned)
             print("Cleand Saved to file: ../crawling/scraped_output_example_cleaned.md")

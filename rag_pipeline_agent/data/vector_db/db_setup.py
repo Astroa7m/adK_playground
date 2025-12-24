@@ -7,6 +7,9 @@ from dotenv import load_dotenv
 from pymilvus import MilvusClient
 from google import genai
 from google.genai import types, Client
+from tqdm import tqdm
+
+from rag_pipeline_agent.data.common import Q_A_EXT
 
 load_dotenv()
 
@@ -16,7 +19,7 @@ ZILLIZ_PASSWORD = os.getenv("ZILLIZ_PASSWORD")
 ZILLIZ_ENDPOINT = os.getenv("ZILLIZ_ENDPOINT")
 
 DIMENSION_SIZE = 768
-in_file_path = "../common/q_a.json"
+BATCH_SIZE = 100
 
 gemini_client: Optional[Client] = None
 milvus_client: Optional[MilvusClient] = None
@@ -44,7 +47,10 @@ def ensure_gemini_client():
                 gemini_client = genai.Client(api_key=api_key)
 
 
-def create_vector_db(db_name: str, collection_name):
+def main(file_path, db_name: str, collection_name):
+
+    in_file_path = file_path / Q_A_EXT
+
     if not os.path.exists(in_file_path):
         raise FileNotFoundError(f"Missing Q/A data at {in_file_path}")
 
@@ -63,23 +69,30 @@ def create_vector_db(db_name: str, collection_name):
         with open(in_file_path, encoding="utf-8") as f:
             qa = json.load(f)
 
-        result = gemini_client.models.embed_content(
-            model="gemini-embedding-001",
-            contents=qa,
-            config=types.EmbedContentConfig(output_dimensionality=DIMENSION_SIZE)
-        )
-        data = [
-            {"id": i, "vector": result.embeddings[i].values, "text": qa[i], "type": "qa"}
-            for i in range(len(result.embeddings))
-        ]
+        all_data = []
 
-        res = milvus_client.insert(collection_name=collection_name, data=data)
+        for i in tqdm(range(0, len(qa), BATCH_SIZE), desc="Embedding batches"):
+            batch = qa[i:i+BATCH_SIZE]
+            result = gemini_client.models.embed_content(
+                model="gemini-embedding-001",
+                contents=batch,
+                config=types.EmbedContentConfig(output_dimensionality=DIMENSION_SIZE)
+            )
+
+
+            data = [
+                {"id": i, "vector": result.embeddings[i].values, "text": qa[i], "type": "qa"}
+                for i in range(len(result.embeddings))
+            ]
+            all_data.extend(data)
+
+        res = milvus_client.insert(collection_name=collection_name, data=all_data)
         print(f"Data inserted Successfully: {res}")
     except Exception as e:
         raise RuntimeError(f"Vector DB Creation failed: {e}")
 
 
-def query_collection(db_name, query: str, collection_name: str):
+def query_collection(query: str, db_name,collection_name: str):
     try:
         ensure_milvus_instance(db_name)
         ensure_gemini_client()
@@ -97,7 +110,8 @@ def query_collection(db_name, query: str, collection_name: str):
             output_fields=["text"],
         )
         text_result = [item['entity'] for item in res[0]]
-        print(text_result)
+        for item in text_result:
+            print(item)
     except Exception as e:
         raise RuntimeError(f"Querying DB collection failed: {e}")
 
