@@ -3,6 +3,7 @@ import re
 from unidecode import unidecode
 
 from rag_pipeline_agent.data.common import SCRAPPED_EXT, CLEANED_EXT
+from rag_pipeline_agent.data.common.helpers import clean_up
 
 
 def normalize_links(data: str):
@@ -107,7 +108,8 @@ def deduplicate(data: str):
 
 
 def main(file_path, remove_images=False):
-    with open(file_path / SCRAPPED_EXT, encoding="utf=8") as f:
+    in_file_path = file_path / SCRAPPED_EXT
+    with open(in_file_path, encoding="utf=8") as f:
         data = f.read()
 
     if not isinstance(data, str):
@@ -132,6 +134,8 @@ def main(file_path, remove_images=False):
         with open(file_path  / CLEANED_EXT, "w",encoding="utf=8") as f:
             f.write(final_cleaned)
 
+        # removing the used input file to save res
+        clean_up(in_file_path)
         print("Scrapped Data has been successfully cleaned")
 
     except Exception as e:

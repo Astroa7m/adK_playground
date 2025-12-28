@@ -1,12 +1,16 @@
 import json
+from typing import List
 
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 import os
+
+from pydantic import BaseModel, Field, RootModel
 from tqdm import tqdm
 
 from rag_pipeline_agent.data.common import CLEANED_EXT, Q_A_EXT
+from rag_pipeline_agent.data.common.helpers import clean_up
 from rag_pipeline_agent.data.q_a_generation.token_helper import chunk_by_context_window_if_needed
 
 load_dotenv()
@@ -36,6 +40,13 @@ Example output format:
     }
 ]
 """
+
+class QA(BaseModel):
+    Q:str = Field(description="question")
+    A:str= Field(description="answer")
+
+class QAList(RootModel):
+    root: List[QA] = Field(description="List of questions and answer object")
 
 def dump_json(out_file_path: str, extra_data: list):
 
@@ -80,7 +91,9 @@ def main(file_path):
                 model="gemini-2.5-flash-lite",
                 contents=content,
                 config=types.GenerateContentConfig(
-                    system_instruction=system_prompt
+                    system_instruction=system_prompt,
+                    response_mime_type="application/json",
+                    response_json_schema=QAList.model_json_schema()
                 )
             )
 
@@ -89,8 +102,6 @@ def main(file_path):
             for chunk in tqdm(response, desc="Streaming chunks", unit="chunk"):
                 final_data += chunk.text
 
-            # removing backticks and 'json'
-            final_data = final_data.replace("`", "").replace("json", "")
 
             data = json.loads(final_data)
 
@@ -100,6 +111,8 @@ def main(file_path):
             dump = [f"Q:{entry["Q"]}A:{entry["A"]}" for entry in data]
 
             dump_json(out_file_path, dump)
+
+            clean_up(in_file_path)
             print("Done Converting data into Q/A")
         except json.JSONDecodeError as e:
             print(f"Skipping chunk: LLM returned invalid JSON. Error: {e}")
