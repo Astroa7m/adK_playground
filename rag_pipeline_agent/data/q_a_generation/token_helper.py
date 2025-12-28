@@ -1,3 +1,5 @@
+import ast
+
 from google import genai
 from dotenv import load_dotenv
 import os
@@ -69,12 +71,11 @@ def __test_count_tokens():
         print(f"You are using {int(count / CONTEXT_WINDOW * 100)}% of memory")
 
 def __test_chunking():
-   with open("../data/scraped_output_example", encoding="utf-8") as f:
-        inn = f.read()
-        inn = inn * 20
-        data = chunk_by_context_window_if_needed([inn])
+   with open("../common/test/scrapped.txt", encoding="utf-8") as f:
+        data = ast.literal_eval(f.read())
+        data = chunk_by_context_window_if_needed(data)
         for i, item in enumerate(data):
-            print(f"{i+1}. {item.replace("\n", " ")[:100]}")
+            print(f"{i+1}. {item.replace("\n", " ")}")
 
 if __name__ == "__main__":
     # __test_count_tokens()

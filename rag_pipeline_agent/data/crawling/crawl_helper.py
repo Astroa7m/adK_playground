@@ -1,5 +1,6 @@
 import asyncio
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from firecrawl import AsyncFirecrawl, Firecrawl
@@ -62,9 +63,13 @@ async def async_scrape(file_path, website_url):
         # If crawl_site raises an exception, gather will propagate it immediately
         # and stop the monitor automatically.
         await asyncio.gather(crawl_site(website_url), monitor())
-        # we are going to have a standard format for all scrapped data, all are going to be .md
+        # we are going to have a standard format for all scrapped data, all are going to be markdown
+        # but we are going to save them within a text file
         with open(file_path / SCRAPPED_EXT, "w", encoding="utf=8") as f:
-            f.write(str(docs.data))
+            scrapped_data = []
+            for item in docs.data:
+                scrapped_data.append(item.markdown)
+            f.write(str(scrapped_data))
     except Exception as e:
         print(f"Crawl Task Failed: {e}")
         raise
@@ -74,6 +79,5 @@ def main(file_path, website_url):
     asyncio.run(async_scrape(file_path, website_url))
 
 if "__main__" == __name__:
-    print(asyncio.run(async_scrape("www.omantel.com")))
-
+    main(Path("../common/test/"), "https://www.ooredoo.om/")
 

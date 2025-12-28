@@ -1,11 +1,12 @@
+import ast
 import json
+import os
+import time
 from typing import List
 
+from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
-import os
-
 from pydantic import BaseModel, Field, RootModel
 from tqdm import tqdm
 
@@ -17,7 +18,7 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 client = genai.Client(api_key=api_key)
-
+timeout = 30 # in seconds
 system_prompt = """
 You will be provided with website-scraped data in Markdown format.  
 Your task is to transform this data into a comprehensive Question/Answer dataset in English, suitable for model training.  
@@ -27,7 +28,7 @@ Guidelines:
 - Each entry must be expressed as a Q/A pair.  
 - Output must be in **pure JSON format** only.  
 - Do not include greetings, explanations, or conclusions.  
-
+- Feel free to return empty list when the input not informative or just links
 Example output format:
 [
     {
@@ -41,15 +42,17 @@ Example output format:
 ]
 """
 
+
 class QA(BaseModel):
-    Q:str = Field(description="question")
-    A:str= Field(description="answer")
+    Q: str = Field(description="question")
+    A: str = Field(description="answer")
+
 
 class QAList(RootModel):
     root: List[QA] = Field(description="List of questions and answer object")
 
-def dump_json(out_file_path: str, extra_data: list):
 
+def dump_json(out_file_path: str, extra_data: list):
     if os.path.exists(out_file_path):
         with open(out_file_path, "r", encoding="utf-8") as f:
             # checking if file is not empty
@@ -67,25 +70,31 @@ def dump_json(out_file_path: str, extra_data: list):
         with open(out_file_path, "w", encoding="utf-8") as f:
             json.dump(extra_data, f, ensure_ascii=False, indent=4)
 
-def main(file_path):
 
-    in_file_path = file_path  / CLEANED_EXT
-    out_file_path = file_path  / Q_A_EXT
+def main(file_path):
+    in_file_path = file_path / CLEANED_EXT
+    out_file_path = file_path / Q_A_EXT
 
     if not os.path.exists(in_file_path):
         raise FileNotFoundError(f"Input file missing: {in_file_path}. Did you run the cleaner?")
 
-    # getting markdwon data
-    with open(in_file_path, encoding="utf-8") as in_f:
-        in_data = in_f.read()
+    try:
+        with open(in_file_path, encoding="utf-8") as in_f:
+            # contains a list of data in pages
+            # total items are 10
+            in_data = ast.literal_eval(in_f.read())
+    except Exception as e:
+        raise RuntimeError(f"Couldn't parse the list of cleaned data: {e}")
 
     # checking for markdown data size
     try:
-        full_content_chunks = chunk_by_context_window_if_needed([in_data])
+        full_content_chunks = chunk_by_context_window_if_needed(in_data)
     except Exception as e:
         raise RuntimeError(f"Chunking failed: {e}")
 
     for content in full_content_chunks:
+        # recording start time
+        start = time.time()
         try:
             response = client.models.generate_content_stream(
                 model="gemini-2.5-flash-lite",
@@ -94,33 +103,38 @@ def main(file_path):
                     system_instruction=system_prompt,
                     response_mime_type="application/json",
                     response_json_schema=QAList.model_json_schema()
-                )
+                ),
             )
 
             final_data = ""
 
             for chunk in tqdm(response, desc="Streaming chunks", unit="chunk"):
+                if time.time() - start > timeout:
+                    print("Timeout reached for this chunk, skipping to next...")
+                    break  # stop this chunk, continue outer loop
                 final_data += chunk.text
-
 
             data = json.loads(final_data)
 
             if not isinstance(data, list):
                 raise ValueError("LLM did not return a list of Q/A pairs.")
 
-            dump = [f"Q:{entry["Q"]}A:{entry["A"]}" for entry in data]
+            dump = [f"Q:{entry['Q']}A:{entry['A']}" for entry in data]
 
             dump_json(out_file_path, dump)
 
-            clean_up(in_file_path)
-            print("Done Converting data into Q/A")
         except json.JSONDecodeError as e:
             print(f"Skipping chunk: LLM returned invalid JSON. Error: {e}")
             print(f"Returned response: {data}")
-            break
+            print("Skipping bad chunk")
+            continue
         except Exception as e:
             print(f"Unexpected error during generation: {e}")
-            break
+            print("Skipping bad chunk")
+            continue
+
+    clean_up(in_file_path)
+    print("Done Converting data into Q/A")
 
 
 if __name__ == "__main__":

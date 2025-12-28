@@ -1,4 +1,7 @@
+import ast
 import re
+from pathlib import Path
+from typing import List
 
 from unidecode import unidecode
 
@@ -110,30 +113,32 @@ def deduplicate(data: str):
 def main(file_path, remove_images=False):
     in_file_path = file_path / SCRAPPED_EXT
     with open(in_file_path, encoding="utf=8") as f:
-        data = f.read()
+        data = ast.literal_eval(f.read())
 
-    if not isinstance(data, str):
-        raise TypeError(f"data param must be a string got {type(data).__name__} instead")
+    if not isinstance(data, List):
+        raise TypeError(f"data param must be a list got {type(data).__name__} instead")
 
-    if not data.strip():
-        raise ValueError("data param must not be empty")
+    if not data:
+        raise ValueError("data param must not be empty or null")
 
     try:
+        all_cleaned_data = []
+        for row in data:
+            normalized_link = normalize_links(row)
 
-        normalized_link = normalize_links(data)
+            if remove_images:
+                normalized_link = remove_image_alt_link(normalized_link)
 
-        if remove_images:
-            normalized_link = remove_image_alt_link(normalized_link)
+            lines_fixed = fix_multiple_newlines(normalized_link)
 
-        lines_fixed = fix_multiple_newlines(normalized_link)
+            standardized = standardize_encoding(lines_fixed)
 
-        standardized = standardize_encoding(lines_fixed)
+            final_cleaned = deduplicate(standardized)
 
-        final_cleaned = deduplicate(standardized)
+            all_cleaned_data.append(final_cleaned)
 
-        with open(file_path  / CLEANED_EXT, "w",encoding="utf=8") as f:
-            f.write(final_cleaned)
-
+        with open(file_path / CLEANED_EXT, "w", encoding="utf=8") as f:
+            f.write(str(all_cleaned_data))
         # removing the used input file to save res
         clean_up(in_file_path)
         print("Scrapped Data has been successfully cleaned")
@@ -144,16 +149,7 @@ def main(file_path, remove_images=False):
 
 if __name__ == "__main__":
     try:
-        with (open("../crawling/scraped_output_example.md", encoding="utf-8") as in_f,
-              open("../crawling/scraped_output_example_cleaned.md", mode='w', encoding="utf-8") as out_f):
-            raw = in_f.read()
-            init_len = len(raw)
-            cleaned = main(raw)
-            out_f.write(cleaned)
-            final_len = len(cleaned)
-            print("Cleand Saved to file: ../crawling/scraped_output_example_cleaned.md")
+        main(Path(r"../common/test/"))
 
-            print(f"Length before: {init_len}")
-            print(f"Length After: {final_len}")
     except Exception as e:
         print(f"Error occurred: {e}")
