@@ -3,10 +3,9 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from firecrawl import AsyncFirecrawl, Firecrawl
+from firecrawl import AsyncFirecrawl
 
-from rag_pipeline_agent.data.common import SCRAPPED_EXT
-from rag_pipeline_agent.data.common.helpers import create_and_get_website_dir_if_not_exist
+from rag_pipeline_agent.data.common.constants import SCRAPPED_EXT
 
 load_dotenv()
 
@@ -15,6 +14,7 @@ api_key = os.getenv("FIRECRAWL_API_KEY")
 crawler = AsyncFirecrawl(api_key=api_key)
 
 docs = None
+
 
 async def crawl_site(url: str):
     global docs
@@ -38,6 +38,7 @@ async def crawl_site(url: str):
         )
     except Exception as e:
         raise RuntimeError(f"Crawl failed unexpectedly: {e}")
+
 
 # as long as you see some output, you wouldn't give up waiting
 async def monitor():
@@ -78,6 +79,6 @@ async def async_scrape(file_path, website_url):
 def main(file_path, website_url):
     asyncio.run(async_scrape(file_path, website_url))
 
+
 if "__main__" == __name__:
     main(Path("../common/test/"), "https://www.ooredoo.om/")
-

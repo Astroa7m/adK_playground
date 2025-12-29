@@ -5,7 +5,7 @@ from typing import List
 
 from unidecode import unidecode
 
-from rag_pipeline_agent.data.common import SCRAPPED_EXT, CLEANED_EXT
+from rag_pipeline_agent.data.common.constants import SCRAPPED_EXT, CLEANED_EXT
 from rag_pipeline_agent.data.common.helpers import clean_up
 
 

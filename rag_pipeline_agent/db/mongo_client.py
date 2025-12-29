@@ -3,18 +3,7 @@ from typing import Optional
 
 from pymongo import MongoClient
 
-document_1 = {
-    "_id": "1",
-    "name": "Ahmed",
-    "age": 24,
-    "degree": "CS"
-}
-document_2 = {
-    "_id": "2",
-    "name": "Mohammed",
-    "age": 20,
-    "degree": "Civil Engineering"
-}
+from rag_pipeline_agent.common.constants import DB_NAME, COLLECTION_NAME
 
 client: Optional[MongoClient] = None
 _lock = threading.Lock()
@@ -31,26 +20,34 @@ def ensure_mongo_instnace(host="localhost", port=27017):
                     raise ConnectionError(f"Failed to connect to MongoDB: {e}")
 
 
-def main(db_name, collection_name, data):
+def main(data):
     """Create mongo database, and the provided collection name, and inserts id, text into it"""
     ensure_mongo_instnace()
     # well, mongo handles the absence of db or collection, no need to check
     try:
-        db = client[db_name]
-        collection = db[collection_name]
+        db = client[DB_NAME]
+        collection = db[COLLECTION_NAME]
 
         collection.insert_many(data)
     except Exception as e:
         raise RuntimeError(f"Mongo DB Creation failed: {e}")
 
 
-def get_by_id(ids, db_name, collection_name):
+def get_by_id(ids):
     ensure_mongo_instnace()
     try:
-        db = client[db_name]
-        collection = db[collection_name]
+        db = client[DB_NAME]
+        collection = db[COLLECTION_NAME]
 
-        docs = collection.find({"_id": {"$in":ids}})
+        docs = collection.find({"_id": {"$in": ids}})
         return docs
     except Exception as e:
         raise RuntimeError(f"Exception occurred while searching vector db: {e}")
+
+
+def list_tenants():
+    ensure_mongo_instnace()
+    db = client[DB_NAME]
+    collection = db[COLLECTION_NAME]
+    tenants = collection.distinct("tenant")
+    return tenants

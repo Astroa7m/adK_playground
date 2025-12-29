@@ -10,7 +10,7 @@ from google.genai import types
 from pydantic import BaseModel, Field, RootModel
 from tqdm import tqdm
 
-from rag_pipeline_agent.data.common import CLEANED_EXT, Q_A_EXT
+from rag_pipeline_agent.data.common.constants import CLEANED_EXT, Q_A_EXT
 from rag_pipeline_agent.data.common.helpers import clean_up
 from rag_pipeline_agent.data.q_a_generation.token_helper import chunk_by_context_window_if_needed
 
@@ -18,7 +18,7 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 client = genai.Client(api_key=api_key)
-timeout = 30 # in seconds
+timeout = 30  # in seconds
 system_prompt = """
 You will be provided with website-scraped data in Markdown format.  
 Your task is to transform this data into a comprehensive Question/Answer dataset in English, suitable for model training.  

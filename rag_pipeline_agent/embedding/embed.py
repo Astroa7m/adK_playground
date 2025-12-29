@@ -1,5 +1,6 @@
 import os
 import threading
+import time
 from typing import Optional
 
 from dotenv import load_dotenv
@@ -7,7 +8,7 @@ from google import genai
 from google.genai import Client, types
 from tqdm import tqdm
 
-from rag_pipeline_agent.data.common import BATCH_SIZE, DIMENSION_SIZE
+from rag_pipeline_agent.common.constants import DIMENSION_SIZE, BATCH_SIZE
 
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -24,13 +25,19 @@ def ensure_gemini_client():
                 gemini_client = genai.Client(api_key=api_key)
 
 
+def generate_id():
+    time.sleep(0.001)
+    return int(time.time() * 1000)
+
+
 def embed(contents, model="gemini-embedding-001"):
     ensure_gemini_client()
     return gemini_client.models.embed_content(
-            model=model,
-            contents=contents,
-            config=types.EmbedContentConfig(output_dimensionality=DIMENSION_SIZE)
-        )
+        model=model,
+        contents=contents,
+        config=types.EmbedContentConfig(output_dimensionality=DIMENSION_SIZE)
+    )
+
 
 def embed_and_get_result(data):
     """embeds data and returns object containing info about the data
@@ -48,7 +55,7 @@ def embed_and_get_result(data):
         result = embed(batch)
         current_embedded_data = [
             {
-                "id": i + j,
+                "id": generate_id(),
                 "vector": result.embeddings[j].values,
                 "text": batch[j]
             }
