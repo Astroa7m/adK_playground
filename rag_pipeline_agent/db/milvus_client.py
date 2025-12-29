@@ -86,12 +86,14 @@ def list_tenants():
     ensure_milvus_instance()
 
     results = client.query(
-        expr='',
+        COLLECTION_NAME,
+        filter='',
         output_fields=['tenant'],
-        collection_name=COLLECTION_NAME
+        # arbitrary, as if we have 1000 tenants
+        limit=1000
     )
 
-    tenants = list({r["tenants"] for r in results})
+    tenants = list({r["tenant"] for r in results})
 
     return tenants
 

@@ -112,4 +112,5 @@ def list_available_tenants():
 if __name__ == "__main__":
     # main(Path(r"C:\Users\ahmed\PycharmProjects\tryingADK\rag_pipeline_agent\data\common\scrapped\omantel"), "omanteldb", "omantel_collection")
     # query_collection("omantel service",  "omantel_collection")
-    query_knowledge_base("working hours", "awasr")
+    res = query_knowledge_base("working hours", "ooredoo")
+    print(res)
