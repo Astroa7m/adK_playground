@@ -1,3 +1,4 @@
+# with remote token calculation
 # 23:37 mins for 10_000 chunk/rows and 631400 tokens # PASS 1
 # 37:23 mins for 16_296 chunk/rows and 1025488 tokens # TOTAL PASS
 
@@ -124,11 +125,6 @@ def count_token_locally(data):
         raise RuntimeError(f"Google API error during token count: {e}")
 
 
-def iso_8601_to_timestamp(iso):
-    dt = datetime.fromisoformat(iso)
-    timestamp = dt.timestamp()
-    return timestamp
-
 
 def dump_conversations(out_file_path: str, extra_conversation: list):
     data = {}
@@ -155,11 +151,11 @@ def load_conversation_by_chunks(used_prompt):
     total_tokens = count_token_locally(used_prompt)
     print(f"Prompt tokens: {total_tokens}")
     # original ds: https://huggingface.co/datasets/talkmap/banking-conversation-corpus/tree/main
-    total_rows = sum(1 for _ in open("banking_300k.csv", 'r', encoding='utf-8')) - 1  # subtract 1 for header
+    total_rows = sum(1 for _ in open("../dump/banking_300k.csv", 'r', encoding='utf-8')) - 1  # subtract 1 for header
     total_chunks = total_rows // CHUNKSIZE
     # using chunk size to return an iterator where every step (chunk) has n rows
     # so it's like have a lazy loader instead of loading all at once
-    df = pd.read_csv("banking_300k.csv", chunksize=CHUNKSIZE)
+    df = pd.read_csv("../dump/banking_300k.csv", chunksize=CHUNKSIZE)
     conversations = {}
     with tqdm(total=total_chunks, desc="Overall Progress (Chunks)", unit="chunk") as pbar_outer:
         for chunk in df:
@@ -169,7 +165,7 @@ def load_conversation_by_chunks(used_prompt):
 
                 new_message = {
                     "sender": row.speaker,
-                    "timestamp": iso_8601_to_timestamp(row.date_time),
+                    "timestamp": row.date_time,
                     "message": row.text
                 }
 
@@ -203,5 +199,5 @@ def load_conversation_by_chunks(used_prompt):
 if __name__ == "__main__":
     total_conversation = load_conversation_by_chunks(SUMMARIZE_CHAT_CONVERSATION_STRUCTURED_OUTPUT_PROMPT)
     # writing them to a file just for debugging
-    with open("test2.json", "w", encoding="utf-8") as f:
+    with open("../dump/test2.json", "w", encoding="utf-8") as f:
         json.dump(total_conversation, f, ensure_ascii=False, indent=4)
