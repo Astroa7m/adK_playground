@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import List, Optional, Literal, Tuple
+from typing import List, Optional, Literal, Tuple, Dict
 
-from pydantic import BaseModel, Field, conlist
+from pydantic import BaseModel, Field, conlist, RootModel
 
 """
 issues resolved:
@@ -60,7 +60,7 @@ class ConversationExample(BaseModel):
 class AgentConfig(BaseModel):
     agent_name: str = Field(
         description="The name of the AI agent",
-        # examples=["Orki Sales Agent"]
+        # examples=["Sales Agent"]
     )
     personality: AgentPersonality = Field(
         description="Personality of the AI agent",
@@ -111,3 +111,12 @@ class AgentConfig(BaseModel):
         description="General instructions the AI agent has to follow",
         default=""
     )
+    categories:  conlist(str, max_length=10, min_length=6) = Field(
+        description="A set of categories that describes the different types of conversations",
+        # examples=["Create a plan of tasks", "prepare the tools needed to complete the tasks", "solve each task separately", "ask for user feedback"]
+    )
+
+
+class ConversationList(BaseModel):
+    categories_and_chats: Dict[str, List[str]] = Field(description="Contains categories as keys and a list concatenated Q/A str")
+

@@ -25,7 +25,7 @@ from google.genai import Client
 from google.genai.local_tokenizer import LocalTokenizer
 from tqdm import tqdm
 
-from onboarding_agent.prompts import SUMMARIZE_CHAT_CONVERSATION_STRUCTURED_OUTPUT_PROMPT
+from onboarding_agent.prompts import QA_CHAT_CONVERSATION_STRUCTURED_OUTPUT_PROMPT
 
 output_conversation_test_format = {
     "some_id": [
@@ -197,7 +197,7 @@ def load_conversation_by_chunks(used_prompt):
 
 
 if __name__ == "__main__":
-    total_conversation = load_conversation_by_chunks(SUMMARIZE_CHAT_CONVERSATION_STRUCTURED_OUTPUT_PROMPT)
+    total_conversation = load_conversation_by_chunks(QA_CHAT_CONVERSATION_STRUCTURED_OUTPUT_PROMPT)
     # writing them to a file just for debugging
     with open("../dump/test2.json", "w", encoding="utf-8") as f:
         json.dump(total_conversation, f, ensure_ascii=False, indent=4)
